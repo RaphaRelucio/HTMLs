@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Random Number Generator!</title>
+</head>
+<body>
+	Click the Button to Receive 3 Numbers!
+	<br>
+	<br />
+	<button onclick="getNumber()" id="myButton">Generate</button>
+	<input type="text" name="number" id="diceNumbers" value="" readonly>
+	<br>
+
+	<script>
+		function getNumber() {
+			var xhr = new XMLHttpRequest();
+			var url = "http://localhost:8080/randomNumber";
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					var resultJSON = JSON.parse(xhr.responseText)
+
+					var htmlDisplay = "";
+					for ( var i in resultJSON) {
+						htmlDisplay += resultJSON[i].number + ", ";
+					}
+					htmlDisplay = htmlDisplay.slice(0, -2);
+					document.getElementById("diceNumbers").value = htmlDisplay;
+				}
+			};
+			xhr.open("GET", url, true);
+			xhr.send();
+		}
+	</script>
+</body>
+</html>
